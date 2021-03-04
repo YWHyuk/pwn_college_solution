@@ -1,0 +1,119 @@
+device_write
+   0xffffffffc00009de:  push   rbp
+   0xffffffffc00009df:  mov    rbp,rsi
+   0xffffffffc00009e2:  push   rbx
+   0xffffffffc00009e3:  mov    rbx,rdx
+   0xffffffffc00009e6:  push   r8
+   0xffffffffc00009e8:  mov    r8,rcx
+   0xffffffffc00009eb:  mov    rcx,rdx
+   0xffffffffc00009ee:  mov    rdx,rsi
+   0xffffffffc00009f1:  mov    rsi,rdi
+   0xffffffffc00009f4:  mov    rdi,0xffffffffc0001128
+   0xffffffffc00009fb:  call   0xffffffff810b52e9 <printk>
+   0xffffffffc0000a00:  cmp    rbx,0x300
+   0xffffffffc0000a07:  mov    rsi,rbp
+   0xffffffffc0000a0a:  mov    edx,0x300
+   0xffffffffc0000a0f:  cmovbe rdx,rbx
+   0xffffffffc0000a13:  mov    rdi,0xffffffffc0002440
+   0xffffffffc0000a1a:  call   0xffffffff813ab2c0 <_copy_from_user>
+   0xffffffffc0000a1f:  mov    rbp,rax
+loop:
+   0xffffffffc0000a22:  movzx  eax,BYTE PTR [rip+0x1e1c]        # 0xffffffffc0002845
+   0xffffffffc0000a29:  mov    rdi,0xffffffffc0002440
+   0xffffffffc0000a30:  lea    edx,[rax+0x1]
+   0xffffffffc0000a33:  lea    rax,[rax+rax*2]
+   0xffffffffc0000a37:  mov    si,WORD PTR [rax-0x3fffdbc0]	# 0xffffffffc0002440 + rax
+   0xffffffffc0000a3e:  mov    BYTE PTR [rip+0x1e01],dl        # 0xffffffffc0002845
+   0xffffffffc0000a44:  mov    WORD PTR [rsp+0x5],si
+   0xffffffffc0000a49:  movzx  edx,sil
+   0xffffffffc0000a4d:  movzx  esi,BYTE PTR [rsp+0x6]
+   0xffffffffc0000a52:  shl    rsi,0x8
+   0xffffffffc0000a56:  or     rdx,rsi
+   0xffffffffc0000a59:  movzx  esi,BYTE PTR [rax-0x3fffdbbe]
+   0xffffffffc0000a60:  shl    rsi,0x10
+   0xffffffffc0000a64:  or     rsi,rdx
+   0xffffffffc0000a67:  call   0xffffffffc00008e8 <interpret_instruction>
+   0xffffffffc0000a6c:  mov    esi,DWORD PTR [rip+0x25d6]        # 0xffffffffc0003048
+   0xffffffffc0000a72:  test   esi,esi
+   0xffffffffc0000a74:  je     0xffffffffc0000a22
+   0xffffffffc0000a76:  mov    rdi,0xffffffffc0001168
+   0xffffffffc0000a7d:  call   0xffffffff810b52e9 <printk>
+   0xffffffffc0000a82:  mov    rax,rbx
+   0xffffffffc0000a85:  pop    rdx
+   0xffffffffc0000a86:  pop    rbx
+   0xffffffffc0000a87:  sub    rax,rbp
+   0xffffffffc0000a8a:  pop    rbp
+   0xffffffffc0000a8b:  ret
+
+<interpret_instruction>
+   0xffffffffc00008e8:  push   rbp
+   0xffffffffc00008e9:  mov    rbp,rdi
+   0xffffffffc00008ec:  push   rbx
+   0xffffffffc00008ed:  mov    ebx,esi
+   0xffffffffc00008ef:  push   rcx
+   0xffffffffc00008f0:  mov    QWORD PTR [rsp],rsi
+   0xffffffffc00008f4:  movzx  eax,BYTE PTR [rdi+0x406]
+   0xffffffffc00008fb:  movzx  ecx,BYTE PTR [rdi+0x402]
+   0xffffffffc0000902:  movzx  edx,BYTE PTR [rdi+0x401]
+   0xffffffffc0000909:  movzx  esi,BYTE PTR [rdi+0x400]
+   0xffffffffc0000910:  push   rax
+   0xffffffffc0000911:  movzx  eax,BYTE PTR [rdi+0x405]
+   0xffffffffc0000918:  push   rax
+   0xffffffffc0000919:  movzx  r9d,BYTE PTR [rdi+0x404]
+   0xffffffffc0000921:  movzx  r8d,BYTE PTR [rdi+0x403]
+   0xffffffffc0000929:  mov    rdi,0xffffffffc00010c0
+   0xffffffffc0000930:  call   0xffffffff810b52e9 <printk>
+   0xffffffffc0000935:  movzx  ecx,BYTE PTR [rsp+0x11]
+   0xffffffffc000093a:  movzx  esi,bl
+   0xffffffffc000093d:  movzx  edx,BYTE PTR [rsp+0x12]
+   0xffffffffc0000942:  mov    rdi,0xffffffffc0001100
+   0xffffffffc0000949:  call   0xffffffff810b52e9 <printk>
+   0xffffffffc000094e:  pop    rsi
+   0xffffffffc000094f:  pop    rdi
+   0xffffffffc0000950:  test   bl,0x40
+   0xffffffffc0000953:  je     0xffffffffc0000961 
+   0xffffffffc0000955:  mov    rsi,QWORD PTR [rsp]
+   0xffffffffc0000959:  mov    rdi,rbp
+   0xffffffffc000095c:  call   0xffffffffc0000370 <interpret_imm>
+   0xffffffffc0000961:  test   bl,0x2
+   0xffffffffc0000964:  je     0xffffffffc0000972
+   0xffffffffc0000966:  mov    rsi,QWORD PTR [rsp]
+   0xffffffffc000096a:  mov    rdi,rbp
+   0xffffffffc000096d:  call   0xffffffffc00003b7 <interpret_add>
+   0xffffffffc0000972:  test   bl,bl
+   0xffffffffc0000974:  jns    0xffffffffc0000982
+   0xffffffffc0000976:  mov    rsi,QWORD PTR [rsp]
+   0xffffffffc000097a:  mov    rdi,rbp
+   0xffffffffc000097d:  call   0xffffffffc0000426 <interpret_stk>
+   0xffffffffc0000982:  test   bl,0x10
+   0xffffffffc0000985:  je     0xffffffffc0000993
+   0xffffffffc0000987:  mov    rsi,QWORD PTR [rsp]
+   0xffffffffc000098b:  mov    rdi,rbp
+   0xffffffffc000098e:  call   0xffffffffc00004f5 <interpret_stm>
+   0xffffffffc0000993:  test   bl,0x8
+   0xffffffffc0000996:  je     0xffffffffc00009a4
+   0xffffffffc0000998:  mov    rsi,QWORD PTR [rsp]
+   0xffffffffc000099c:  mov    rdi,rbp
+   0xffffffffc000099f:  call   0xffffffffc0000558 <interpret_ldm>
+   0xffffffffc00009a4:  test   bl,0x1
+   0xffffffffc00009a7:  je     0xffffffffc00009b5
+   0xffffffffc00009a9:  mov    rsi,QWORD PTR [rsp]
+   0xffffffffc00009ad:  mov    rdi,rbp
+   0xffffffffc00009b0:  call   0xffffffffc00005bd <interpret_cmp>
+   0xffffffffc00009b5:  test   bl,0x4
+   0xffffffffc00009b8:  je     0xffffffffc00009c6
+   0xffffffffc00009ba:  mov    rsi,QWORD PTR [rsp]
+   0xffffffffc00009be:  mov    rdi,rbp
+   0xffffffffc00009c1:  call   0xffffffffc0000280 <interpret_jmp>
+   0xffffffffc00009c6:  and    bl,0x20
+   0xffffffffc00009c9:  je     0xffffffffc00009da
+   0xffffffffc00009cb:  mov    rsi,QWORD PTR [rsp]
+   0xffffffffc00009cf:  mov    rdi,rbp
+   0xffffffffc00009d2:  pop    rdx
+   0xffffffffc00009d3:  pop    rbx
+   0xffffffffc00009d4:  pop    rbp
+   0xffffffffc00009d5:  jmp    0xffffffffc0000695
+   0xffffffffc00009da:  pop    rax
+   0xffffffffc00009db:  pop    rbx
+   0xffffffffc00009dc:  pop    rbp
+   0xffffffffc00009dd:  ret
