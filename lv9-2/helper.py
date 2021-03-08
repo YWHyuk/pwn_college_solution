@@ -12,7 +12,7 @@ def read_string(address, l):
 def open_file(address, flag, arg):
 	#print("IMM a,%s" % hex(address))
 	print("IMM b,%s" % hex(flag))
-	print("SYS 0x08,%s" % arg)
+	print("SYS 0x02,%s" % arg)
 
 def read_file(f_idx, address, count):
 	#print("IMM a,%s" % hex(f_idx))
